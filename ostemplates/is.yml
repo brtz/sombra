@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  labels:
+    app: sombra
+    template: application-template-stibuild
+  name: sombra
+  namespace: wag
+spec: {}

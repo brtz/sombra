@@ -12,7 +12,7 @@ RUN set -x \
 
 # unfortunately we need native extensions, so compilers
 # we use tini (github.com/krallin/tini) as init
-RUN apk add --update bash build-base linux-headers ruby-dev tini
+RUN apk add --update bash bind-tools build-base linux-headers ruby-dev tini
 
 ADD Gemfile $APP_HOME/
 ADD Gemfile.lock $APP_HOME/

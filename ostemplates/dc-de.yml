@@ -1,0 +1,100 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  creationTimestamp: '2018-09-21T01:47:29Z'
+  generation: 54
+  labels:
+    app: slt-yachtcharter-crystal-de
+  name: slt-yachtcharter-crystal-de
+  namespace: slt-yachtcharter
+  resourceVersion: '375215'
+  selfLink: >-
+    /apis/apps.openshift.io/v1/namespaces/slt-yachtcharter/deploymentconfigs/slt-yachtcharter-crystal-de
+  uid: 4c79ccee-bd40-11e8-a693-0050562b263e
+spec:
+  replicas: 2
+  selector:
+    app: slt-yachtcharter-crystal-de
+    deploymentconfig: slt-yachtcharter-crystal-de
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+      creationTimestamp: null
+      labels:
+        app: slt-yachtcharter-crystal-de
+        deploymentconfig: slt-yachtcharter-crystal-de
+    spec:
+      containers:
+        - env:
+            - name: REDIS_HOST
+              value: redis.slt-yachtcharter.svc
+            - name: REDIS_PORT
+              value: '6379'
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: redis
+            - name: KEMAL_ENV
+              value: production
+            - name: LANGUAGE
+              value: de
+          image: >-
+            docker-registry.default.svc:5000/slt-yachtcharter/slt-yachtcharter-crystal:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: slt-yachtcharter-crystal-de
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /robots.txt
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - slt-yachtcharter-crystal-de
+        from:
+          kind: ImageStreamTag
+          name: 'slt-yachtcharter-crystal:latest'
+          namespace: slt-yachtcharter
+        lastTriggeredImage: >-
+          docker-registry.default.svc:5000/slt-yachtcharter/slt-yachtcharter-crystal@sha256:25f3c71d1f0406ac85c0504f283310d120297b62102682af2557ea26d97f6b4f
+      type: ImageChange
+    - type: ConfigChange
