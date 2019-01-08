@@ -42,7 +42,7 @@ spec:
                   key: token
                   name: sombra
             - name: SOMBRA_MONGODB_HOST
-              value: mongodb.wag.svc
+              value: mongodb.wag.svc.cluster.local:27017
             - name: SOMBRA_MONGODB_AUTH_SOURCE
               value: admin
             - name: SOMBRA_MONGODB_USER
@@ -83,7 +83,7 @@ spec:
           readinessProbe:
             failureThreshold: 3
             httpGet:
-              path: /robots.txt
+              path: /
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 5
