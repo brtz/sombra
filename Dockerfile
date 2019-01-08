@@ -1,29 +1,27 @@
-FROM ruby:2.6-alpine
+# https://bugs.busybox.net/show_bug.cgi?id=675
+# that's why we stick to stretch here instead of alpine
+FROM ruby:2.6-slim
 MAINTAINER Nils Bartels <n.bartels@bigpoint.net>
 
 ENV APP_HOME /sombra
+ENV TINI_VERSION v0.18.0
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-# https://bugs.busybox.net/show_bug.cgi?id=675
-# annoyingly, let's try to remove options line from /etc/resolv.conf
-RUN sed -i '/options/c\ ' /etc/resolv.conf
-
-# on alpine we need to create www-data
-RUN set -x \
-    && addgroup -g 82 -S www-data \
-    && adduser -u 82 -D -S -G www-data www-data
-
 # unfortunately we need native extensions, so compilers
 # we use tini (github.com/krallin/tini) as init
-RUN apk add --update bash build-base linux-headers ruby-dev tini
+# install tini
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
+RUN chmod +x /sbin/tini
+RUN apt-get update && \
+    apt-get install -y bash build-essential
 
 ADD Gemfile $APP_HOME/
 ADD Gemfile.lock $APP_HOME/
 RUN bundle install --clean
 
 # remove apk packages again
-RUN apk del --purge build-base linux-headers ruby-dev
+RUN apt-get remove -y --purge build-essential
 
 ADD . $APP_HOME
 
