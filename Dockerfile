@@ -17,7 +17,6 @@ RUN apt-get update && \
     apt-get install -y bash build-essential
 
 ADD Gemfile $APP_HOME/
-ADD Gemfile.lock $APP_HOME/
 RUN bundle install --clean
 
 # remove apk packages again
