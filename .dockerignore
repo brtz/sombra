@@ -6,3 +6,5 @@ doc/
 .rubocop.yml
 test/
 .idea/
+ostemplates/
+Jenkinsfile
