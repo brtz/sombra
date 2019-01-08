@@ -18,6 +18,7 @@ group :development do
   gem 'request-log-analyzer'
   gem 'rubocop'
   gem 'yard'
+  gem 'redcarpet'
 end
 
 # gem dedicated to sombra
