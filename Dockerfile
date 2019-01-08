@@ -5,6 +5,10 @@ ENV APP_HOME /sombra
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
+# https://bugs.busybox.net/show_bug.cgi?id=675
+# annoyingly, let's try to remove options line from /etc/resolv.conf
+RUN sed -i '/options/c\ ' /etc/resolv.conf
+
 # on alpine we need to create www-data
 RUN set -x \
     && addgroup -g 82 -S www-data \
@@ -12,7 +16,6 @@ RUN set -x \
 
 # unfortunately we need native extensions, so compilers
 # we use tini (github.com/krallin/tini) as init
-RUN cat /etc/resolv.conf
 RUN apk add --update bash build-base linux-headers ruby-dev tini
 
 ADD Gemfile $APP_HOME/
