@@ -16,8 +16,8 @@ end
 
 group :development do
   gem 'request-log-analyzer'
-  gem 'rubocop'
   gem 'redcarpet'
+  gem 'rubocop'
   gem 'yard'
 end
 
