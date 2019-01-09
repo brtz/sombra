@@ -11,7 +11,7 @@ class Rack::Attack
   #safelist_ip("192.168.0.0/16")
 
   throttle('req/ip', :limit => limit.to_i, :period => period.to_i.seconds) do |req|
-    req.remote_ip
+    req.ip
   end
 
   Rack::Attack.throttled_response = lambda do |env|
