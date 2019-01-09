@@ -95,7 +95,7 @@ Further documentation on Sombra's API can be found in the doc/ folder.
 ---
 
 ### Verifying JWTs
-By default Sombra will use ECDSA256 to sign tokens. This way your application does not
+By default Sombra will use ECDSA512 to sign tokens. This way your application does not
 have to store a private key to verify the token. Your application however needs to
 either be deployed having Sombra's public key or aqcuire it by a request to
 Sombra's index (GET /).
@@ -121,7 +121,7 @@ on your usecase, our way might be over the top or too secure. Some good practice
     As your app/apps/customers are sending their login credentials towards Sombra, it is highly recommended to put
     a TLS enabled reverse proxy in front (e.g. [traefik](https://traefik.io) has builtin Let's Encrypt support).
 
-  * Rotate the ECDSA256 keypair often:
+  * Rotate the ECDSA512 keypair often:
     Another good practice is to rotate Sombra's keys often.
 
   * Run multiple Sombra setups instead of one big one. Aim for fast deployments, not centralization.
