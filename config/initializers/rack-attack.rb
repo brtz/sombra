@@ -6,12 +6,12 @@ class Rack::Attack
   period = ENV['SOMBRA_RATE_LIMIT_PERIOD_IN_S'] || 10
 
   # do not throttle on private nets
-  safelist_ip(10.0.0.0/8)
-  safelist_ip(172.16.0.0/12)
-  safelist_ip(192.168.0.0/16)
+  #safelist_ip("10.0.0.0/8")
+  #safelist_ip("172.16.0.0/12")
+  #safelist_ip("192.168.0.0/16")
 
   throttle('req/ip', :limit => limit.to_i, :period => period.to_i.seconds) do |req|
-    req.ip
+    req.remote_ip
   end
 
   Rack::Attack.throttled_response = lambda do |env|
