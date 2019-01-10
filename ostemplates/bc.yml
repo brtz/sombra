@@ -21,3 +21,8 @@ spec:
     dockerStrategy:
       dockerfilePath: Dockerfile
     type: Docker
+  triggers:
+    - github:
+        secretReference:
+          name: githubhook
+      type: Github
