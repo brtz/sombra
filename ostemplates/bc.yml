@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: sombra
+  namespace: wag
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'sombra:latest'
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      uri: 'git@github.com:brtz/sombra.git'
+    sourceSecret:
+      name: githubsecret
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+    type: Docker

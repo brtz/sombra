@@ -1,11 +1,14 @@
+# encoding: UTF-8
+# frozen_string_literal: true
+
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-# require "active_job/railtie"
+require 'active_model/railtie'
+# require 'active_job/railtie'
 # require "active_record/railtie"
-require "action_controller/railtie"
+require 'action_controller/railtie'
 # require "action_mailer/railtie"
 # require "action_view/railtie"
 # require "action_cable/engine"
@@ -17,6 +20,8 @@ require "action_controller/railtie"
 Bundler.require(*Rails.groups)
 
 module Sombra
+  ##
+  # The sombra application initial controller
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -29,12 +34,15 @@ module Sombra
     config.time_zone = 'UTC'
     config.autoload_paths += %W(#{config.root}/app/errors)
 
+    redis_port = ENV['SOMBRA_REDIS_PORT'] || 6379
+    redis_db = ENV['SOMBRA_REDIS_DATABASE'] || 0
+
     config.cache_store = :redis_store, {
-      host: "redis" || ENV["SOMBRA_REDIS_HOST"],
-      port: 6379 || ENV["SOMBRA_REDIS_PORT"].to_i,
-      db: 0 || ENV["SOMBRA_REDIS_DATABASE"].to_i,
-      password: "foobar" || ENV["SOMBRA_REDIS_PASSWORD"],
-      namespace: "cache"
+      host: ENV['SOMBRA_REDIS_HOST'] || 'redis',
+      port: redis_port.to_i,
+      db: redis_db.to_i,
+      password: ENV['SOMBRA_REDIS_PASSWORD'] || 'foobar',
+      namespace: 'cache'
     }
 
     config.middleware.use Rack::Attack

@@ -1,2 +1,5 @@
-user1 = User.create(name: 'admin', password: 'admin', role: 'admin')
-user2 = User.create(name: 'firstapp', password: 'foobar', role: 'application')
+# encoding: UTF-8
+# frozen_string_literal: true
+
+User.create(name: 'admin', password: 'admin', role: 'admin')
+User.create(name: 'firstapp', password: 'foobar', role: 'application')

@@ -1,0 +1,116 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: sombra
+  name: sombra
+  namespace: wag
+spec:
+  replicas: 1
+  selector:
+    app: sombra
+    deploymentconfig: sombra
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sombra
+        deploymentconfig: sombra
+    spec:
+      containers:
+        - env:
+            - name: SOMBRA_TOKEN_ISSUER
+              value: wagsombra
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  key: base
+                  name: sombra
+            - name: SOMBRA_TOKEN_SECRET_PRIVATE
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: sombra
+            - name: SOMBRA_MONGODB_HOST
+              value: mongodb.wag.svc.cluster.local:27017
+            - name: SOMBRA_MONGODB_AUTH_SOURCE
+              value: sombra_production
+            - name: SOMBRA_MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: mongodb
+            - name: SOMBRA_MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: mongodb
+            - name: SOMBRA_MONGODB_MAX_POOL_SIZE
+              value: '10'
+            - name: SOMBRA_MONGODB_MAX_POOL_SIZE
+              value: '5'
+            - name: SOMBRA_REDIS_HOST
+              value: redis.wag.svc
+            - name: SOMBRA_REDIS_PORT
+              value: '6379'
+            - name: SOMBRA_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: redis
+            - name: RAILS_ENV
+              value: production
+          image: >-
+            docker-registry.default.svc:5000/wag/sombra:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: sombra
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - sombra
+        from:
+          kind: ImageStreamTag
+          name: 'sombra:latest'
+          namespace: wag
+      type: ImageChange
+    - type: ConfigChange

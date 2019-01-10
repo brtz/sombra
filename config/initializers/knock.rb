@@ -1,3 +1,6 @@
+# encoding: UTF-8
+# frozen_string_literal: true
+
 Knock.setup do |config|
 
   ## Expiration claim
@@ -7,8 +10,8 @@ Knock.setup do |config|
   ## last forever.
   ##
   ## Default:
-  config.token_lifetime = 1.hour
-
+  expiraton = ENV['SOMBRA_TOKEN_EXPIRATION_IN_S'] || 3600
+  config.token_lifetime = expiraton.to_i.seconds
 
   ## Audience claim
   ## --------------
@@ -28,7 +31,7 @@ Knock.setup do |config|
   ## Configure the algorithm used to encode the token
   ##
   ## Default:
-  config.token_signature_algorithm = 'ES256'
+  config.token_signature_algorithm = ENV['SOMBRA_TOKEN_ALG'] || 'ES512'
 
   ## Signature key
   ## -------------
@@ -37,7 +40,7 @@ Knock.setup do |config|
   ##
   ## Default:
   #config.token_secret_signature_key = -> { Rails.application.secrets.secret_key_base }
-  config.token_secret_signature_key = -> { OpenSSL::PKey::EC.new Rails.application.secrets.token_es256_priv }
+  config.token_secret_signature_key = -> { OpenSSL::PKey::EC.new Rails.application.secrets.token_es_priv }
 
   ## If using Auth0, uncomment the line below
   # config.token_secret_signature_key = -> { JWT.base64url_decode Rails.application.secrets.auth0_client_secret }
@@ -48,7 +51,7 @@ Knock.setup do |config|
   ## Configure the public key used to decode tokens, if required.
   ##
   ## Default:
-  pubkey = OpenSSL::PKey::EC.new Rails.application.secrets.token_es256_priv
+  pubkey = OpenSSL::PKey::EC.new Rails.application.secrets.token_es_priv
   pubkey.private_key = nil
   config.token_public_key = pubkey
 

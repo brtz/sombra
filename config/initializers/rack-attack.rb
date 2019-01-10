@@ -1,12 +1,21 @@
+# encoding: UTF-8
+# frozen_string_literal: true
+
 class Rack::Attack
-  throttle('user_token/ip', :limit => 10, :period => 10.seconds) do |req|
-    if req.path == '/user_token' && req.post?
-      req.ip
-    end
+  limit = ENV['SOMBRA_RATE_LIMIT_REQUESTS'] || 300
+  period = ENV['SOMBRA_RATE_LIMIT_PERIOD_IN_S'] || 10
+
+  # do not throttle on private nets
+  safelist_ip("10.0.0.0/8")
+  safelist_ip("172.16.0.0/12")
+  safelist_ip("192.168.0.0/16")
+
+  throttle('req/ip', :limit => limit.to_i, :period => period.to_i.seconds) do |req|
+    req.ip
   end
 
   Rack::Attack.throttled_response = lambda do |env|
-    now = Time.now
+    now = Time.now.utc
     match_data = env['rack.attack.match_data']
 
     headers = {
@@ -15,6 +24,6 @@ class Rack::Attack
       'X-RateLimit-Reset' => (now + (match_data[:period] - now.to_i % match_data[:period])).to_s
     }
 
-    [ 429, headers, ["Throttled\n"]]
+    [ 429, headers, ["Throttled"]]
   end
 end
