@@ -31,6 +31,8 @@ spec:
         - env:
             - name: SOMBRA_TOKEN_ISSUER
               value: wagsombra
+            - name: SOMBRA_TOKEN_EXPIRATION_IN_S
+              value: 604800
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
