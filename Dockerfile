@@ -5,7 +5,7 @@ MAINTAINER Nils Bartels <n.bartels@bigpoint.net>
 
 ENV APP_HOME /sombra
 ENV TINI_VERSION v0.18.0
-RUN mkdir $APP_HOME
+RUN usermod -m -d $APP_HOME www-data
 WORKDIR $APP_HOME
 
 # unfortunately we need native extensions, so compilers
