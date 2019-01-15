@@ -24,7 +24,7 @@ end
 # gem dedicated to sombra
 gem 'access-granted', '~> 1.3.1'
 # we use a fork here until it is merged, adds jwt 2.1.0 support with ed25519
-gem 'knock', :git => 'https://github.com/JonaMX/knock.git'
+gem 'knock', :git => 'https://github.com/brtz/knock.git'
 gem 'mongoid', '~> 7.0.2'
 gem 'oj', '~> 3.7.6'
 gem 'oj_mimic_json', '~> 1.0.1'
