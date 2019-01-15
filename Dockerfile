@@ -14,13 +14,25 @@ WORKDIR $APP_HOME
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
 RUN chmod +x /sbin/tini
 RUN apt-get update && \
-    apt-get install -y bash build-essential
+    apt-get install -y bash build-essential curl file git wget
 
+# we need libsodium for rbnacl for ED25519
+ADD https://github.com/jedisct1/libsodium/releases/download/1.0.17/libsodium-1.0.17.tar.gz $APP_HOME/libsodium/
+WORKDIR $APP_HOME/libsodium/
+RUN tar -xzf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17 && ./configure && make && make check && make install
+
+WORKDIR $APP_HOME
 ADD Gemfile $APP_HOME/
+RUN chown -R www-data:www-data $APP_HOME && \
+    chmod -R 0777 $APP_HOME
+USER www-data
+
 RUN bundle install --clean
 
 # remove apk packages again
-RUN apt-get remove -y --purge build-essential
+USER root
+RUN rm -rf ${APP_HOME}/libsodium/
+RUN apt-get remove -y --purge build-essential wget
 
 ADD . $APP_HOME
 
