@@ -39,8 +39,7 @@ ADD . $APP_HOME
 # chown files for www-data write access. webserver needs Gemfile.lock
 # Also as OpenShift changes the user, we need to allow everyone to write in $APP_HOME
 RUN chown -R www-data:www-data $APP_HOME && \
-    chmod -R 0777 $APP_HOME && \
-    chmod -R 0777 /usr/local/bundle
+    chmod -R 0777 $APP_HOME
 
 USER www-data
 
