@@ -9,7 +9,7 @@ ram = ENV['SOMBRA_PUMA_RAM'] || 1024
 
 threads threads_min.to_i, threads_max.to_i
 workers workers_max.to_i
-#preload_app!
+preload_app!
 
 before_fork do
   require 'puma_worker_killer'

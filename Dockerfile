@@ -23,9 +23,6 @@ RUN tar -xzf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17 && ./configure && ma
 
 WORKDIR $APP_HOME
 ADD Gemfile $APP_HOME/
-RUN chown -R www-data:www-data $APP_HOME && \
-    chmod -R 0777 $APP_HOME
-USER www-data
 
 RUN bundle install --clean
 
