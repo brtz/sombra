@@ -21,10 +21,9 @@ RUN apt-get update && \
 WORKDIR $APP_HOME
 ADD Gemfile $APP_HOME/
 
-RUN bundle install --clean
+RUN bundle install --clean --jobs=4
 
 # remove apk packages again
-USER root
 RUN rm -rf ${APP_HOME}/libsodium/
 RUN apt-get remove -y --purge build-essential wget
 
