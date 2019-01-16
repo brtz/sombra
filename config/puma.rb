@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 # config/puma.rb
 
-threads_min = ENV['SOMBRA_PUMA_THREADS_MIN'] || 8
-threads_max = ENV['SOMBRA_PUMA_THREADS_MAX'] || 32
+threads_min = ENV['SOMBRA_PUMA_THREADS_MIN'] || 2
+threads_max = ENV['SOMBRA_PUMA_THREADS_MAX'] || 8
 workers_max = ENV['SOMBRA_PUMA_WORKERS'] || 3
 ram = ENV['SOMBRA_PUMA_RAM'] || 1024
 

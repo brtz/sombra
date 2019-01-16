@@ -31,7 +31,7 @@ Knock.setup do |config|
   ## Configure the algorithm used to encode the token
   ##
   ## Default:
-  config.token_signature_algorithm = ENV['SOMBRA_TOKEN_ALG'] || 'ED25519'
+  config.token_signature_algorithm = 'ED25519'
   
   ## Signature key
   ## -------------
@@ -41,8 +41,6 @@ Knock.setup do |config|
   ## Default:
   #config.token_secret_signature_key = -> { Rails.application.secrets.secret_key_base }
   privkey = RbNaCl::Signatures::Ed25519::SigningKey.new(Rails.application.secrets.token_es_priv)
-  pubkey = privkey.verify_key
-
   config.token_secret_signature_key = -> { privkey }
     
   ## If using Auth0, uncomment the line below
@@ -54,9 +52,7 @@ Knock.setup do |config|
   ## Configure the public key used to decode tokens, if required.
   ##
   ## Default:
-  #pubkey = OpenSSL::PKey::EC.new Rails.application.secrets.token_es_priv
-  #pubkey.private_key = nil
-  config.token_public_key = pubkey
+  config.token_public_key = privkey.verify_key
   
   ## Exception Class
   ## ---------------

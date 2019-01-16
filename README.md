@@ -95,7 +95,7 @@ Further documentation on Sombra's API can be found in the doc/ folder.
 ---
 
 ### Verifying JWTs
-By default Sombra will use ECDSA512 to sign tokens. This way your application does not
+By default Sombra will use ED25519 to sign tokens. This way your application does not
 have to store a private key to verify the token. Your application however needs to
 either be deployed having Sombra's public key or aqcuire it by a request to
 Sombra's index (GET /).
@@ -121,7 +121,7 @@ on your usecase, our way might be over the top or too secure. Some good practice
     As your app/apps/customers are sending their login credentials towards Sombra, it is highly recommended to put
     a TLS enabled reverse proxy in front (e.g. [traefik](https://traefik.io) has builtin Let's Encrypt support).
 
-  * Rotate the ECDSA512 keypair often:
+  * Rotate the ED25519 keypair often:
     Another good practice is to rotate Sombra's keys often.
 
   * Run multiple Sombra setups instead of one big one. Aim for fast deployments, not centralization.
@@ -146,8 +146,7 @@ Sombra is configurable through environment variables:
 | Variable  | Default | Required | Description |
 | --------- |:-------:|:----------:|--------------|
 | SECRET_KEY_BASE | nil | yes | A long string which is used by Rails to secure sessions and more.|
-| SOMBRA_TOKEN_SECRET_PRIVATE | nil | yes | Your ECDSA private key (pem, 1 line, see config/secrets.yml for example, see https://github.com/jwt/ruby-jwt ECDSA how to generate one).|
-| SOMBRA_TOKEN_ALG | ES512 | no | Algorithm used for signing. Make sure to match the SOMBRA_TOKEN_SECRET_PRIVATE alg.|
+| SOMBRA_TOKEN_SECRET_PRIVATE | nil | yes | Your ED25519 private key (string, 32bytes, see config/secrets.yml for example, see https://github.com/jwt/ruby-jwt ED25519 how to generate one).|
 | SOMBRA_TOKEN_ISSUER | nil | yes | A name for your Sombra setup. This is used in the JWT iss claim.|
 | SOMBRA_TOKEN_EXPIRATION_IN_S | 3600 | no | Token expiration in seconds.|
 | SOMBRA_REDIS_HOST | redis | no | The name of your redis host.|
