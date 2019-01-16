@@ -13,13 +13,10 @@ WORKDIR $APP_HOME
 # install tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /sbin/tini
 RUN chmod +x /sbin/tini
+RUN echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/strech-backports.list
 RUN apt-get update && \
-    apt-get install -y bash build-essential curl file git wget
-
-# we need libsodium for rbnacl for ED25519
-ADD https://github.com/jedisct1/libsodium/releases/download/1.0.17/libsodium-1.0.17.tar.gz $APP_HOME/libsodium/
-WORKDIR $APP_HOME/libsodium/
-RUN tar -xzf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17 && ./configure && make && make check && make install
+    apt-get install -y bash build-essential curl file git nano wget && \
+    apt-get -t stretch-backports -y install libsodium-dev
 
 WORKDIR $APP_HOME
 ADD Gemfile $APP_HOME/
