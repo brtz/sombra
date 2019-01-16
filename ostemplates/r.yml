@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: sombra
+  namespace: wag
+spec:
+  host: sombra-wag.openshift.bartels.xyz
+  port:
+    targetPort: main
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: sombra
+    weight: 100
+  wildcardPolicy: None
