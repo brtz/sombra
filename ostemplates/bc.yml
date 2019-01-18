@@ -13,6 +13,7 @@ spec:
   runPolicy: Serial
   source:
     git:
+      ref: 'next'
       uri: 'git@github.com:brtz/sombra.git'
     sourceSecret:
       name: githubsecret
