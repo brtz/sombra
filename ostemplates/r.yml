@@ -4,7 +4,7 @@ metadata:
   name: sombra
   namespace: wag
 spec:
-  host: sombra-wag.openshift.bartels.xyz
+  host: sombra-wag.os.bartels.xyz
   port:
     targetPort: main
   tls:
