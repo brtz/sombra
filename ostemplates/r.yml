@@ -2,9 +2,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: sombra
-  namespace: wag
+  namespace: sombra
 spec:
-  host: sombra-wag.os.bartels.xyz
+  host: sombra-sombra.os.bartels.xyz
   port:
     targetPort: main
   tls:

@@ -2,7 +2,7 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   name: sombra
-  namespace: wag
+  namespace: sombra
 spec:
   output:
     to:

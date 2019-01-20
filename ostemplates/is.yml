@@ -5,5 +5,5 @@ metadata:
     app: sombra
     template: application-template-stibuild
   name: sombra
-  namespace: wag
+  namespace: sombra
 spec: {}

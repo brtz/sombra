@@ -4,7 +4,7 @@ metadata:
   labels:
     app: sombra
   name: sombra
-  namespace: wag
+  namespace: sombra
 spec:
   replicas: 1
   selector:
@@ -30,7 +30,7 @@ spec:
       containers:
         - env:
             - name: SOMBRA_TOKEN_ISSUER
-              value: wagsombra
+              value: sombra
             - name: SOMBRA_TOKEN_EXPIRATION_IN_S
               value: '604800'
             - name: SECRET_KEY_BASE
@@ -44,7 +44,7 @@ spec:
                   key: token
                   name: sombra
             - name: SOMBRA_MONGODB_HOST
-              value: mongodb.wag.svc.cluster.local:27017
+              value: sombra-mongodb.sombra.svc.cluster.local:27017
             - name: SOMBRA_MONGODB_AUTH_SOURCE
               value: sombra_production
             - name: SOMBRA_MONGODB_USER
@@ -62,7 +62,7 @@ spec:
             - name: SOMBRA_MONGODB_MAX_POOL_SIZE
               value: '5'
             - name: SOMBRA_REDIS_HOST
-              value: redis.wag.svc
+              value: redis.sombra.svc
             - name: SOMBRA_REDIS_PORT
               value: '6379'
             - name: SOMBRA_REDIS_PASSWORD
@@ -73,7 +73,7 @@ spec:
             - name: RAILS_ENV
               value: production
           image: >-
-            docker-registry.default.svc:5000/wag/sombra:latest
+            docker-registry.default.svc:5000/sombra/sombra:latest
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -113,6 +113,6 @@ spec:
         from:
           kind: ImageStreamTag
           name: 'sombra:latest'
-          namespace: wag
+          namespace: sombra
       type: ImageChange
     - type: ConfigChange
