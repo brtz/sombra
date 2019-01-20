@@ -51,25 +51,25 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: database-user
-                  name: mongodb
+                  name: sombra-mongodb
             - name: SOMBRA_MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: database-password
-                  name: mongodb
+                  name: sombra-mongodb
             - name: SOMBRA_MONGODB_MAX_POOL_SIZE
               value: '10'
             - name: SOMBRA_MONGODB_MAX_POOL_SIZE
               value: '5'
             - name: SOMBRA_REDIS_HOST
-              value: redis.sombra.svc
+              value: sombra-redis.sombra.svc
             - name: SOMBRA_REDIS_PORT
               value: '6379'
             - name: SOMBRA_REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: database-password
-                  name: redis
+                  name: sombra-redis
             - name: RAILS_ENV
               value: production
           image: >-
